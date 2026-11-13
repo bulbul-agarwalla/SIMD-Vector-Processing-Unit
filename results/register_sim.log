@@ -1,0 +1,18 @@
+VCD info: dumpfile register.vcd opened for output.
+=== vector_register testbench ===
+[PASS] T1 reset (enables high)      | A exp=0000000000000000 got=0000000000000000 | B exp=0000000000000000 got=0000000000000000
+[PASS] T2 write A only              | A exp=0123456789abcdef got=0123456789abcdef | B exp=0000000000000000 got=0000000000000000
+[PASS] T3 write B only              | A exp=0123456789abcdef got=0123456789abcdef | B exp=fedcba9876543210 got=fedcba9876543210
+[PASS] T4 write A and B together    | A exp=deadbeefcafef00d got=deadbeefcafef00d | B exp=8040201008040201 got=8040201008040201
+[PASS] T5 hold (enables low)        | A exp=deadbeefcafef00d got=deadbeefcafef00d | B exp=8040201008040201 got=8040201008040201
+[PASS] T6 distinct value per lane   | A exp=0a141e28323c4650 got=0a141e28323c4650 | B exp=0102030405060708 got=0102030405060708
+[PASS] T7 walking lane              | A exp=ff00000000000000 got=ff00000000000000 | B exp=5a00000000000000 got=5a00000000000000
+[PASS] T7 walking lane: lanes 0-7 each isolated
+[PASS] T8 all-ones / 0xAA           | A exp=ffffffffffffffff got=ffffffffffffffff | B exp=aaaaaaaaaaaaaaaa got=aaaaaaaaaaaaaaaa
+[PASS] T8 0x55 / all-ones           | A exp=5555555555555555 got=5555555555555555 | B exp=ffffffffffffffff got=ffffffffffffffff
+[PASS] T9 reset mid-cycle, no edge  | A exp=5555555555555555 got=5555555555555555 | B exp=ffffffffffffffff got=ffffffffffffffff
+[PASS] T9 reset after data written  | A exp=0000000000000000 got=0000000000000000 | B exp=0000000000000000 got=0000000000000000
+[PASS] T10 write after reset        | A exp=a5a55a5a0f0ff0f0 got=a5a55a5a0f0ff0f0 | B exp=0011223344556677 got=0011223344556677
+[PASS] T11 random: 1000 cycles match the reference model
+=== ALL TESTS PASSED: 1023 checks, 0 failures ===
+testbench/register_tb.v:176: $finish called at 10226000 (1ps)

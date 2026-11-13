@@ -2,6 +2,7 @@
 # Compiled simulation executables
 alu_sim
 simd_sim
+register_sim
 *.out
 *.vvp
 
