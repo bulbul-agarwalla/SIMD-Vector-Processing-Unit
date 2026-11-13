@@ -1,0 +1,12 @@
+
+# Compiled simulation executables
+alu_sim
+simd_sim
+*.out
+*.vvp
+
+# Generated waveform files in project root
+/*.vcd
+
+# Mac system files
+.DS_Store
