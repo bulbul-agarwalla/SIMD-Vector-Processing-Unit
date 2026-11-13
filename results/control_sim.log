@@ -1,0 +1,24 @@
+VCD info: dumpfile control.vcd opened for output.
+================================================================
+  SIMD Control Unit & Opcode Decoder – Simulation Results
+================================================================
+ Test                 | opcode | alu_op | valid | op_sel
+----------------------------------------------------------------
+[PASS] TC-01: ADD           | opcode=000 | alu_op=000 | valid=1 | op_sel=00001
+[PASS] TC-02: SUB           | opcode=001 | alu_op=001 | valid=1 | op_sel=00010
+[PASS] TC-03: AND           | opcode=010 | alu_op=010 | valid=1 | op_sel=00100
+[PASS] TC-04: OR            | opcode=011 | alu_op=011 | valid=1 | op_sel=01000
+[PASS] TC-05: LESS_THAN     | opcode=100 | alu_op=100 | valid=1 | op_sel=10000
+[PASS] TC-06: INVALID_101   | opcode=101 | alu_op=000 | valid=0 | op_sel=00000
+[PASS] TC-07: INVALID_110   | opcode=110 | alu_op=000 | valid=0 | op_sel=00000
+[PASS] TC-08: INVALID_111   | opcode=111 | alu_op=000 | valid=0 | op_sel=00000
+================================================================
+ SIMULATION SUMMARY
+================================================================
+ Total Tests : 8
+ PASSED      : 8
+ FAILED      : 0
+================================================================
+ ALL TESTS PASSED – Control Unit verified successfully.
+================================================================
+testbench/control_tb.v:150: $finish called at 40000 (1ps)
