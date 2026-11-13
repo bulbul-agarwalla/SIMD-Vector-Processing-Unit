@@ -3,6 +3,7 @@
 alu_sim
 simd_sim
 register_sim
+control_sim
 *.out
 *.vvp
 
