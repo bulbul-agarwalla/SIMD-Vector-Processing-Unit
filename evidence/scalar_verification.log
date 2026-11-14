@@ -1,0 +1,15 @@
+
+===== SCALAR vs SIMD VERIFICATION =====
+PASS: Opcode 000 | Scalar = 0b16212c37424d58 | SIMD = 0b16212c37424d58
+PASS: Opcode 001 | Scalar = 09121b242d363f48 | SIMD = 09121b242d363f48
+PASS: Opcode 010 | Scalar = 0000020000040600 | SIMD = 0000020000040600
+PASS: Opcode 011 | Scalar = 0b161f2c373e4758 | SIMD = 0b161f2c373e4758
+PASS: Opcode 100 | Scalar = 0000000000000000 | SIMD = 0000000000000000
+PASS: Opcode 101 | Scalar = 0000000000000000 | SIMD = 0000000000000000
+
+===== FINAL SUMMARY =====
+Total tests : 6
+Passed      : 6
+Failed      : 0
+RESULT: ALL TESTS PASSED
+testbench/scalar_tb.v:93: $finish called at 60 (1s)

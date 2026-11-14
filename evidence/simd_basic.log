@@ -1,0 +1,31 @@
+VCD info: dumpfile simd.vcd opened for output.
+
+SIMD ADDITION:
+Lane 7: 11
+Lane 6: 22
+Lane 5: 33
+Lane 4: 44
+Lane 3: 55
+Lane 2: 66
+Lane 1: 77
+Lane 0: 88
+
+SIMD SUBTRACTION:
+Lane 7: 9
+Lane 6: 18
+Lane 5: 27
+Lane 4: 36
+Lane 3: 45
+Lane 2: 54
+Lane 1: 63
+Lane 0: 72
+
+SIMD AND:
+Result = 0000020000040600
+
+SIMD OR:
+Result = 0b161f2c373e4758
+
+SIMD LESS THAN:
+Result = 0000000000000000
+testbench/simd_tb.v:69: $finish called at 50 (1s)
