@@ -159,6 +159,60 @@ module simd_verification_tb;
         );
 
         // ------------------------------------------------------------------
+        // TEST 3 – Bitwise AND
+        // ------------------------------------------------------------------
+        $display("\n[ TEST 3 ] Bitwise AND (OP_AND)");
+
+        // Complementary patterns: A&B should zero out each lane
+        A      = {8'hFF, 8'hAA, 8'h55, 8'hF0, 8'h0F, 8'hCC, 8'h33, 8'h00};
+        B      = {8'hFF, 8'h55, 8'hAA, 8'h0F, 8'hF0, 8'h33, 8'hCC, 8'hFF};
+        opcode = OP_AND;
+        #10;
+        // lane7=FF&FF=FF, lane6..0=complementary pairs → 0
+        verify_all_lanes(
+            {8'hFF, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00},
+            64'd5
+        );
+
+        // AND with partial-overlap patterns producing non-zero results
+        $display("  AND with partial-overlap patterns");
+        A      = {8'hF0, 8'hCC, 8'hAA, 8'h96, 8'h3C, 8'h5A, 8'hE1, 8'h7F};
+        B      = {8'hFF, 8'hCC, 8'h55, 8'h69, 8'hC3, 8'hA5, 8'h1E, 8'h80};
+        opcode = OP_AND;
+        #10;
+        // lane7=F0&FF=F0, lane6=CC&CC=CC, lane5..0=complementary → 0
+        verify_all_lanes(
+            {8'hF0, 8'hCC, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00},
+            64'd6
+        );
+
+        // ------------------------------------------------------------------
+        // TEST 4 – Bitwise OR
+        // ------------------------------------------------------------------
+        $display("\n[ TEST 4 ] Bitwise OR (OP_OR)");
+
+        // Complementary pairs: A|B should give 0xFF for every lane
+        A      = {8'hFF, 8'hAA, 8'h55, 8'hF0, 8'h0F, 8'hCC, 8'h33, 8'h00};
+        B      = {8'h00, 8'h55, 8'hAA, 8'h0F, 8'hF0, 8'h33, 8'hCC, 8'hFF};
+        opcode = OP_OR;
+        #10;
+        verify_all_lanes(
+            {8'hFF, 8'hFF, 8'hFF, 8'hFF, 8'hFF, 8'hFF, 8'hFF, 8'hFF},
+            64'd7
+        );
+
+        // OR with zero: identity property
+        $display("  OR with zero inputs gives back other operand");
+        A      = {8'd0, 8'd0, 8'd0, 8'd0, 8'd0, 8'd0, 8'd0, 8'd0};
+        B      = {8'hDE, 8'hAD, 8'hBE, 8'hEF, 8'hCA, 8'hFE, 8'hBA, 8'hBE};
+        opcode = OP_OR;
+        #10;
+        verify_all_lanes(
+            {8'hDE, 8'hAD, 8'hBE, 8'hEF, 8'hCA, 8'hFE, 8'hBA, 8'hBE},
+            64'd8
+        );
+
+        // ------------------------------------------------------------------
         // FINAL SUMMARY
         // ------------------------------------------------------------------
         $display("\n=============================================================");
