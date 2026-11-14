@@ -101,7 +101,22 @@ module simd_verification_tb;
         $display("=============================================================");
         $display(" 8-Lane SIMD Verification Testbench");
         $display("=============================================================");
-        $display(" [Skeleton] No tests yet.");
+        // ------------------------------------------------------------------
+        // TEST 1 – Vector Addition
+        // ------------------------------------------------------------------
+        $display("\n[ TEST 1 ] Vector Addition (OP_ADD)");
+
+        A      = {8'd10, 8'd20, 8'd30, 8'd40, 8'd50, 8'd60, 8'd70, 8'd80};
+        B      = {8'd1,  8'd2,  8'd3,  8'd4,  8'd5,  8'd6,  8'd7,  8'd8};
+        opcode = OP_ADD;
+        #10;
+        // Expected per lane (lane0 is LSB slice):
+        // lane0=80+8=88, lane1=70+7=77, lane2=60+6=66, lane3=50+5=55
+        // lane4=40+4=44, lane5=30+3=33, lane6=20+2=22, lane7=10+1=11
+        verify_all_lanes(
+            {8'd11, 8'd22, 8'd33, 8'd44, 8'd55, 8'd66, 8'd77, 8'd88},
+            64'd1
+        );
 
         // ------------------------------------------------------------------
         // FINAL SUMMARY
