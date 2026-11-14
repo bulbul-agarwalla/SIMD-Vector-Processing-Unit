@@ -4,6 +4,7 @@ alu_sim
 simd_sim
 register_sim
 control_sim
+verify_sim
 *.out
 *.vvp
 
