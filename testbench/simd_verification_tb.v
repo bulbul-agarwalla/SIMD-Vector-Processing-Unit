@@ -213,6 +213,120 @@ module simd_verification_tb;
         );
 
         // ------------------------------------------------------------------
+        // TEST 5 – Less-Than Comparison
+        // ------------------------------------------------------------------
+        $display("\n[ TEST 5 ] Less-Than Comparison (OP_LT)");
+
+        // Case A: all A < B → all lanes output 1
+        $display("  Case 5a: A < B  → all lanes output 1");
+        A      = {8'd0,  8'd1,  8'd10, 8'd50, 8'd100, 8'd127, 8'd200, 8'd254};
+        B      = {8'd1,  8'd2,  8'd11, 8'd51, 8'd101, 8'd128, 8'd201, 8'd255};
+        opcode = OP_LT;
+        #10;
+        verify_all_lanes(
+            {8'd1, 8'd1, 8'd1, 8'd1, 8'd1, 8'd1, 8'd1, 8'd1},
+            64'd9
+        );
+
+        // Case B: all A == B → all lanes output 0
+        $display("  Case 5b: A == B → all lanes output 0");
+        A      = {8'd42, 8'd42, 8'd42, 8'd42, 8'd42, 8'd42, 8'd42, 8'd42};
+        B      = {8'd42, 8'd42, 8'd42, 8'd42, 8'd42, 8'd42, 8'd42, 8'd42};
+        opcode = OP_LT;
+        #10;
+        verify_all_lanes(
+            {8'd0, 8'd0, 8'd0, 8'd0, 8'd0, 8'd0, 8'd0, 8'd0},
+            64'd10
+        );
+
+        // Case C: all A > B → all lanes output 0
+        $display("  Case 5c: A > B  → all lanes output 0");
+        A      = {8'd255, 8'd200, 8'd100, 8'd50, 8'd25, 8'd10, 8'd5, 8'd2};
+        B      = {8'd100, 8'd100, 8'd50,  8'd25, 8'd10, 8'd5,  8'd2, 8'd1};
+        opcode = OP_LT;
+        #10;
+        verify_all_lanes(
+            {8'd0, 8'd0, 8'd0, 8'd0, 8'd0, 8'd0, 8'd0, 8'd0},
+            64'd11
+        );
+
+        // Case D: mixed A<B and A>B per lane
+        $display("  Case 5d: Mixed A<B / A>B per lane");
+        A      = {8'd10, 8'd200, 8'd10, 8'd200, 8'd10, 8'd200, 8'd10, 8'd200};
+        B      = {8'd200, 8'd10, 8'd200, 8'd10, 8'd200, 8'd10, 8'd200, 8'd10};
+        opcode = OP_LT;
+        #10;
+        // lane7=10<200→1, lane6=200>10→0, alternating
+        verify_all_lanes(
+            {8'd1, 8'd0, 8'd1, 8'd0, 8'd1, 8'd0, 8'd1, 8'd0},
+            64'd12
+        );
+
+        // ------------------------------------------------------------------
+        // TEST 6 – Boundary / Edge Cases
+        // ------------------------------------------------------------------
+        $display("\n[ TEST 6 ] Boundary / Edge Cases");
+
+        // 6a: All zeros ADD
+        $display("  Case 6a: 0 + 0 = 0 (all lanes)");
+        A      = 64'd0;
+        B      = 64'd0;
+        opcode = OP_ADD;
+        #10;
+        verify_all_lanes(64'd0, 64'd13);
+
+        // 6b: 255 + 1 = 0 (overflow wraparound)
+        $display("  Case 6b: 255 + 1 = 0 wraparound");
+        A      = {8'd255, 8'd255, 8'd255, 8'd255, 8'd255, 8'd255, 8'd255, 8'd255};
+        B      = {8'd1,   8'd1,   8'd1,   8'd1,   8'd1,   8'd1,   8'd1,   8'd1};
+        opcode = OP_ADD;
+        #10;
+        verify_all_lanes(64'd0, 64'd14);
+
+        // 6c: 255 AND 255 = 255
+        $display("  Case 6c: 255 AND 255 = 255");
+        A      = {8'd255,8'd255,8'd255,8'd255,8'd255,8'd255,8'd255,8'd255};
+        B      = {8'd255,8'd255,8'd255,8'd255,8'd255,8'd255,8'd255,8'd255};
+        opcode = OP_AND;
+        #10;
+        verify_all_lanes(
+            {8'd255,8'd255,8'd255,8'd255,8'd255,8'd255,8'd255,8'd255},
+            64'd15
+        );
+
+        // 6d: 0 OR 0 = 0
+        $display("  Case 6d: 0 OR 0 = 0");
+        A      = 64'd0;
+        B      = 64'd0;
+        opcode = OP_OR;
+        #10;
+        verify_all_lanes(64'd0, 64'd16);
+
+        // 6e: Mixed lane pattern — alternating 0 and 255
+        $display("  Case 6e: Mixed 0/255 ADD");
+        A      = {8'd255, 8'd0, 8'd255, 8'd0, 8'd255, 8'd0, 8'd255, 8'd0};
+        B      = {8'd0,   8'd255, 8'd0, 8'd255, 8'd0, 8'd255, 8'd0, 8'd255};
+        opcode = OP_ADD;
+        #10;
+        verify_all_lanes(
+            {8'd255, 8'd255, 8'd255, 8'd255, 8'd255, 8'd255, 8'd255, 8'd255},
+            64'd17
+        );
+
+        // 6f: Near-boundary values for LT
+        $display("  Case 6f: Near-255 less-than boundary");
+        A      = {8'd254, 8'd255, 8'd253, 8'd0, 8'd1, 8'd127, 8'd128, 8'd129};
+        B      = {8'd255, 8'd255, 8'd254, 8'd1, 8'd0, 8'd128, 8'd127, 8'd128};
+        opcode = OP_LT;
+        #10;
+        // lane7=254<255→1, lane6=255==255→0, lane5=253<254→1, lane4=0<1→1
+        // lane3=1>0→0,     lane2=127<128→1,  lane1=128>127→0, lane0=129>128→0
+        verify_all_lanes(
+            {8'd1, 8'd0, 8'd1, 8'd1, 8'd0, 8'd1, 8'd0, 8'd0},
+            64'd18
+        );
+
+        // ------------------------------------------------------------------
         // FINAL SUMMARY
         // ------------------------------------------------------------------
         $display("\n=============================================================");
