@@ -119,6 +119,46 @@ module simd_verification_tb;
         );
 
         // ------------------------------------------------------------------
+        // TEST 2 – Vector Subtraction (positive, zero, underflow/wraparound)
+        // ------------------------------------------------------------------
+        $display("\n[ TEST 2 ] Vector Subtraction (OP_SUB)");
+
+        // Case A: positive results
+        $display("  Case 2a: Positive subtraction results");
+        A      = {8'd100, 8'd90, 8'd80, 8'd70, 8'd60, 8'd50, 8'd40, 8'd30};
+        B      = {8'd10,  8'd9,  8'd8,  8'd7,  8'd6,  8'd5,  8'd4,  8'd3};
+        opcode = OP_SUB;
+        #10;
+        // lane0=27, lane1=36, lane2=45, lane3=54, lane4=63, lane5=72, lane6=81, lane7=90
+        verify_all_lanes(
+            {8'd90, 8'd81, 8'd72, 8'd63, 8'd54, 8'd45, 8'd36, 8'd27},
+            64'd2
+        );
+
+        // Case B: zero results (A == B)
+        $display("  Case 2b: Zero results (A == B)");
+        A      = {8'd128, 8'd64, 8'd32, 8'd16, 8'd8, 8'd4, 8'd2, 8'd1};
+        B      = {8'd128, 8'd64, 8'd32, 8'd16, 8'd8, 8'd4, 8'd2, 8'd1};
+        opcode = OP_SUB;
+        #10;
+        verify_all_lanes(
+            {8'd0, 8'd0, 8'd0, 8'd0, 8'd0, 8'd0, 8'd0, 8'd0},
+            64'd3
+        );
+
+        // Case C: underflow / 8-bit wraparound  (A < B → result = 256+A-B)
+        $display("  Case 2c: Underflow wraparound (A < B, 8-bit wrap)");
+        A      = {8'd0,  8'd1,  8'd2,  8'd3,  8'd10, 8'd50, 8'd100, 8'd200};
+        B      = {8'd1,  8'd2,  8'd3,  8'd4,  8'd11, 8'd51, 8'd101, 8'd201};
+        opcode = OP_SUB;
+        #10;
+        // 8-bit modular: each A[k]-B[k] = -1 → wraps to 255
+        verify_all_lanes(
+            {8'd255, 8'd255, 8'd255, 8'd255, 8'd255, 8'd255, 8'd255, 8'd255},
+            64'd4
+        );
+
+        // ------------------------------------------------------------------
         // FINAL SUMMARY
         // ------------------------------------------------------------------
         $display("\n=============================================================");
