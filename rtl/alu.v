@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 
 module alu (
     input  [7:0] A,
