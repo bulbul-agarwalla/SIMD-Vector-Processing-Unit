@@ -387,3 +387,7 @@ The project demonstrates 8-way data parallelism and highlights the potential adv
 **Language:** Verilog HDL
 **Simulation Tool:** Icarus Verilog
 **Architecture:** 8-Lane SIMD
+
+## Visual RTL Simulation Demo
+
+Run `./scripts/run_simd_demo.sh` to see the integrated processor execute all five supported operations and an invalid opcode on two distinct operand sets. The self-checking testbench prints expected/actual vectors and lane results, then generates `results/simd_demo.vcd`. For GTKWave setup and a suggested presentation flow, see [docs/SIMD_DEMO.md](docs/SIMD_DEMO.md).
