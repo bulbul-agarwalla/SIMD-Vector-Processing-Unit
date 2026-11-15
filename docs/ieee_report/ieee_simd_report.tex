@@ -3,7 +3,7 @@
 \usepackage{graphicx,booktabs,array,url}
 \graphicspath{{figures/}}
 \title{Design and Verification of an 8-Lane SIMD Vector Processing Unit Using Verilog HDL}
-\author{\IEEEauthorblockN{Bulbul Agarwalla, Kanchan [official full name to confirm], Kanishka Dubey, Shourya Pratap, and Udit Jain}
+\author{\IEEEauthorblockN{Bulbul Agarwalla, Kanchan Rani, Kanishka Dubey, Shourya Pratap, and Udit Jain}
 \IEEEauthorblockA{[Department], [University]\\[Course title and code]\\Faculty guide: [name/designation]\\Phase I report; deadline November 16, 2026, 11:59 PM IST (confirm actual submission date)}}
 \begin{document}\maketitle
 \begin{abstract}
@@ -43,11 +43,11 @@ The scalar comparison loops over the eight bytes and compares its packed result 
 No FPGA synthesis/implementation reports, resource utilization, maximum frequency, timing slack, power, or physical performance measurements are available. Actual timing depends on synthesis, target, constraints, and implementation.
 \section{Team Contributions}
 Git history contains five repository identities. Authorship supports evidence of recorded commits, not full allocation. Confirm all scopes and official names before submission.
-\begin{table}[t]\caption{Contributions based on repository evidence}\centering\begin{tabular}{lp{.64\columnwidth}}\toprule Member&Evidence and confirmation\\\midrule Bulbul Agarwalla&Author of initial SIMD core and integrated processor work; confirm scope.\\Kanchan [official name to confirm]&Git identity kanchan97-cp; performance-analysis commit; confirm name and scope.\\Kanishka Dubey&Author of SIMD testbench/results work; confirm scope.\\Shourya Pratap&Author of control/opcode/control-test work; confirm scope.\\Udit Jain&Author of register/register-test/evidence work; confirm scope.\\\bottomrule\end{tabular}\end{table}
+\begin{table}[t]\caption{Contributions based on repository evidence}\centering\begin{tabular}{p{.26\columnwidth}p{.18\columnwidth}p{.48\columnwidth}}\toprule Team member&Enrollment no.&Evidence and confirmation\\\midrule Bulbul Agarwalla&2401010131&Author of initial SIMD core and integrated processor work; confirm scope.\\Kanchan Rani&2401010206&Git identity kanchan97-cp; authored performance-analysis commit; confirm scope.\\Kanishka Dubey&2401010208&Author of SIMD testbench/results work; confirm scope.\\Shourya Pratap&2401010445&Author of control/opcode/control-test work; confirm scope.\\Udit Jain&[to confirm]&Author of register/register-test/evidence work; confirm scope.\\\bottomrule\end{tabular}\end{table}
 \section{Conclusion and Future Work}
 The project integrates two synchronous 64-bit operand registers, an opcode decoder, and eight parallel 8-bit ALUs. It supports ADD, SUB, AND, OR, and unsigned LT; invalid operations are flagged and masked. Five counter-based benches reported 1,301 passing checks, including 80 integrated checks. The implementation demonstrates byte-level data parallelism in RTL and simulation, without establishing FPGA implementation, resource cost, timing, or measured hardware speedup.
 Future work includes FPGA synthesis, resource and timing analysis, physical validation, wider vectors, more operations, pipelining, and performance benchmarks with equivalent clock/workload assumptions. More robust mismatch failure handling and coverage reporting would strengthen verification.
 \section*{Submission Notes}
-Source snapshot: repository main at commit 94e7303f50045c6d890e39d2a80e5a7fbc52a71b, accessed Nov. 15, 2026. This is a Phase I report draft, not an IEEE publication or endorsement. Fill the bracketed institution/course/guide details; confirm Kanchan's official name, contributions, any required roll numbers, and actual submission date.
+Source snapshot: repository main at commit 94e7303f50045c6d890e39d2a80e5a7fbc52a71b, accessed Nov. 15, 2026. This is a Phase I report draft, not an IEEE publication or endorsement. Fill the bracketed institution/course/guide details; confirm Udit Jain's enrollment number, contribution descriptions, and actual submission date.
 \bibliographystyle{IEEEtran}\bibliography{references}
 \end{document}

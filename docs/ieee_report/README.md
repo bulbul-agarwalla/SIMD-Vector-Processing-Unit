@@ -26,4 +26,4 @@ The report reflects the RTL and testbench snapshot at main commit `94e7303f50045
 
 ## Complete before submission
 
-Fill the bracketed department, university, course, guide, and official Kanchan name. Confirm all member contribution descriptions, roll numbers if required, actual submission date, and any faculty-prescribed formatting. The deadline provided was November 16, 2026, 11:59 PM IST. The report is not an IEEE publication or endorsement.
+Fill the bracketed department, university, course, and guide. Confirm Udit Jain’s enrollment number, all member contribution descriptions, actual submission date, and any faculty-prescribed formatting. The deadline provided was November 16, 2026, 11:59 PM IST. The report is not an IEEE publication or endorsement.
