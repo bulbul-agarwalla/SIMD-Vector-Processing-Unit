@@ -1,0 +1,22 @@
+
+===== CLOCKED SCALAR PERFORMANCE MODEL =====
+Cycle 1: Element 0 | A=80 | B=8 | Result=88
+Cycle 2: Element 1 | A=70 | B=7 | Result=77
+Cycle 3: Element 2 | A=60 | B=6 | Result=66
+Cycle 4: Element 3 | A=50 | B=5 | Result=55
+Cycle 5: Element 4 | A=40 | B=4 | Result=44
+Cycle 6: Element 5 | A=30 | B=3 | Result=33
+Cycle 7: Element 6 | A=20 | B=2 | Result=22
+Cycle 8: Element 7 | A=10 | B=1 | Result=11
+
+===== PERFORMANCE SUMMARY =====
+Scalar ALUs             : 1
+SIMD ALUs               : 8
+Elements per scalar cycle: 1
+Elements per SIMD evaluation: 8
+Scalar model cycles     : 8
+
+Scalar result : 0b16212c37424d58
+SIMD result   : 0b16212c37424d58
+VERIFICATION: PASSED
+testbench/scalar_performance_tb.v:104: $finish called at 76 (1s)
