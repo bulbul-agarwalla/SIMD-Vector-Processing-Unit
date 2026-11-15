@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 
 module simd_top (
     input  [63:0] A,

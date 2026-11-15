@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 // =============================================================================
 // Module      : control_unit
 // Project     : 8-Lane SIMD Vector Processing Unit

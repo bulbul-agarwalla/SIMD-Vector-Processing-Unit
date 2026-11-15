@@ -4,6 +4,8 @@ Design, implementation, and verification of an 8-lane SIMD (Single Instruction, 
 
 This project demonstrates parallel data processing using eight independent 8-bit ALU lanes controlled by a shared 3-bit opcode.
 
+The integrated processor wrapper is `rtl/simd_processor_top.v`. It connects the synchronous operand register file, combinational opcode control unit, and existing eight-lane datapath. The legacy `simd_top` interface remains available for standalone datapath tests.
+
 ---
 
 ## 1. Project Overview
@@ -43,6 +45,24 @@ The following diagram illustrates the overall SIMD architecture, including input
 
 ![8-Lane SIMD Architecture](docs/architecture.png)
 
+### Integrated Processor Hierarchy
+
+```mermaid
+flowchart LR
+    DA[data_in_a] --> VR[vector_register]
+    DB[data_in_b] --> VR
+    CLK[clk / synchronous reset / write enables] --> VR
+    VR -->|vector_a, vector_b| SIMD[simd_top: 8 parallel ALU lanes]
+    OP[opcode] --> CU[control_unit]
+    CU -->|alu_opcode| SIMD
+    CU -->|operation_valid, op_select| OUT[debug and control outputs]
+    SIMD --> MASK[invalid-operation result mask]
+    CU --> MASK
+    MASK --> RESULT[result]
+```
+
+The vector registers update only on the rising clock edge. The control decoder and SIMD operation are combinational; the result settles after register outputs and opcode settle and is not a separately registered one-cycle output. Invalid opcodes `101`, `110`, and `111` deassert `operation_valid`, clear `op_select`, and produce an externally masked zero result. See [integrated architecture and verification](results/integrated_simd_top.md).
+
 ### How It Works
 
 1. Two 64-bit input vectors (A and B) are provided.
@@ -81,7 +101,8 @@ SIMD-Vector-Processing-Unit/
 │   ├── simd_top.v
 │   ├── control_unit.v
 │   ├── opcode_defs.vh
-│   └── vector_register.v
+│   ├── vector_register.v
+│   └── simd_processor_top.v
 │
 ├── testbench/
 │   ├── alu_tb.v
@@ -90,7 +111,8 @@ SIMD-Vector-Processing-Unit/
 │   ├── control_tb.v
 │   ├── register_tb.v
 │   ├── scalar_tb.v
-│   └── scalar_performance_tb.v
+│   ├── scalar_performance_tb.v
+│   └── simd_processor_top_tb.v
 │
 ├── results/
 │   ├── performance_comparison.md
@@ -98,6 +120,7 @@ SIMD-Vector-Processing-Unit/
 │   ├── test_cases.md
 │   ├── control_unit.md
 │   ├── vector_register.md
+│   ├── integrated_simd_top.md
 │   ├── simd_verification_sim.log
 │   ├── control_sim.log
 │   └── register_sim.log
@@ -215,6 +238,20 @@ vvp scalar_perf
 - Elements processed sequentially: 8
 - Scalar and SIMD outputs: Identical
 - Verification: PASSED
+
+### 6.5 Run Integrated Processor Verification
+
+Compile and run the self-checking testbench for the complete registered-operand/control/SIMD integration:
+
+```bash
+iverilog -g2012 -Wall -I rtl -s simd_processor_top_tb \
+  -o /tmp/integrated_simv \
+  rtl/alu.v rtl/vector_register.v rtl/simd_top.v rtl/control_unit.v \
+  rtl/simd_processor_top.v testbench/simd_processor_top_tb.v
+vvp /tmp/integrated_simv
+```
+
+**Executed result:** 80 assertions passed, 0 failed. The suite checks reset and write behavior, all five operations, arithmetic wraparound, comparison relations, all invalid opcodes and output masking, rapid/repeated opcode changes, and post-reset execution. See [integrated verification details](results/integrated_simd_top.md) for the complete coverage and existing-suite results.
 
 ---
 

@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module scalar_tb;
 
 reg [63:0] A, B;
