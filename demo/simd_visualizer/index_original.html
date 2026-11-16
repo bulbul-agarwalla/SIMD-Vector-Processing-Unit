@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08111d">
+  <title>8-Lane SIMD Vector Processing Unit — Visualizer</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <main class="dashboard">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div><p class="eyebrow">RTL SIMULATION / PHASE I</p><p class="brand-name">VECTOR LAB</p></div>
+      </div>
+      <div class="environment"><span class="live-dot"></span><span>VERILOG TRACE</span><span class="environment-sep">·</span><span>LOCAL DATA</span></div>
+    </header>
+
+    <section class="heading-row" aria-labelledby="project-title">
+      <div>
+        <h1 id="project-title">8-Lane SIMD Vector Processing Unit</h1>
+        <p class="subtitle">Verilog HDL <span>·</span> 64-bit Datapath <span>·</span> 8 Parallel Lanes</p>
+      </div>
+      <div class="run-state" id="run-state" data-state="ready"><span class="state-light"></span><span id="run-state-label">READY</span></div>
+    </section>
+
+    <section class="control-strip" aria-label="Simulation controls">
+      <div class="transport">
+        <button class="icon-button" id="previous-button" type="button" aria-label="Previous operation" title="Previous operation">‹</button>
+        <button class="primary-button" id="play-button" type="button"><span aria-hidden="true">▶</span> Play</button>
+        <button class="icon-button" id="pause-button" type="button" aria-label="Pause simulation" title="Pause">Ⅱ</button>
+        <button class="icon-button" id="next-button" type="button" aria-label="Next operation" title="Next operation">›</button>
+        <button class="text-button" id="replay-button" type="button"><span aria-hidden="true">↺</span> Replay</button>
+      </div>
+      <div class="control-options">
+        <label class="select-control"><span>INPUT SET</span><select id="set-selector" aria-label="Select input vector set"><option value="all">All verified checks · 12</option></select></label>
+        <label class="select-control"><span>SPEED</span><select id="speed-selector" aria-label="Animation speed"><option value="0.65">0.65×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label>
+      </div>
+    </section>
+
+    <section class="progress-panel" aria-label="Simulation progress">
+      <div class="progress-copy"><span id="progress-count">Loading trace…</span><span class="phase-label" id="phase-label">Waiting for simulation data</span></div>
+      <div class="progress-track" role="progressbar" id="progress-bar" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div><div class="progress-marker" id="progress-marker"></div></div>
+      <div class="phase-steps" aria-hidden="true"><span data-phase="0">LOAD</span><span data-phase="1">SPLIT</span><span data-phase="2">BROADCAST</span><span data-phase="3">EXECUTE</span><span data-phase="4">COMBINE</span></div>
+    </section>
+
+    <section class="vector-inputs" aria-label="Operand vectors">
+      <article class="vector-panel vector-a-panel" id="vector-a-panel">
+        <div class="panel-heading"><div><span class="vector-tag tag-a">A</span><span class="panel-title">Operand vector A</span></div><span class="bit-label">64 BITS · HEX</span></div>
+        <div class="vector-value" id="vector-a-value">—</div>
+        <div class="byte-strip" id="vector-a-lanes" aria-label="Vector A bytes, lanes L7 to L0"></div>
+      </article>
+      <article class="vector-panel vector-b-panel" id="vector-b-panel">
+        <div class="panel-heading"><div><span class="vector-tag tag-b">B</span><span class="panel-title">Operand vector B</span></div><span class="bit-label">64 BITS · HEX</span></div>
+        <div class="vector-value" id="vector-b-value">—</div>
+        <div class="byte-strip" id="vector-b-lanes" aria-label="Vector B bytes, lanes L7 to L0"></div>
+      </article>
+    </section>
+
+    <section class="instruction-panel" aria-label="Instruction decode and broadcast">
+      <div class="controller-card" id="controller-card">
+        <div class="controller-caption"><span class="micro-label">CONTROL UNIT</span><span class="controller-lamp" id="controller-lamp"></span></div>
+        <div class="instruction-row"><div><span class="micro-label">OPCODE</span><strong class="opcode" id="opcode-value">---</strong></div><div class="instruction-divider"></div><div><span class="micro-label">OPERATION</span><strong id="operation-value">Waiting</strong></div><div class="valid-badge" id="valid-badge">—</div></div>
+        <div class="select-row"><span class="micro-label">ONE-HOT SELECT</span><code id="op-select-value">-----</code><span class="safe-default" id="safe-default">SHARED CONTROL → 8 LANES</span></div>
+      </div>
+      <div class="broadcast-track" id="broadcast-track" aria-hidden="true"><span class="broadcast-text">INSTRUCTION BROADCAST</span><span class="broadcast-line"><i></i></span><span class="broadcast-arrow">›</span></div>
+    </section>
+
+    <section class="lane-section" aria-labelledby="lane-title">
+      <div class="section-heading"><div><p class="eyebrow">PARALLEL EXECUTION ARRAY</p><h2 id="lane-title">Eight byte-wide lanes</h2></div><div class="lane-note"><span class="lane-dot"></span>Same instruction · simultaneous evaluation</div></div>
+      <div class="lane-grid" id="lane-grid" aria-label="Processing lanes from L7 through L0"></div>
+    </section>
+
+    <section class="result-panel" id="result-panel" aria-label="Combined 64-bit result">
+      <div class="result-heading"><div><span class="result-icon" aria-hidden="true">Σ</span><div><p class="eyebrow">LANE RESULTS COMBINED</p><h2>64-bit output vector</h2></div></div><div class="result-status" id="result-status">AWAITING EXECUTION</div></div>
+      <div class="result-value" id="result-value">0000000000000000</div>
+      <div class="byte-strip result-byte-strip" id="result-lanes" aria-label="Result bytes, lanes L7 to L0"></div>
+      <div class="result-foot"><span>R[63:56] ← L7</span><span>Lane 0 = bits [7:0]</span><span>R[7:0] ← L0</span></div>
+    </section>
+
+    <footer class="footer"><span>SIMULATION ONLY · Icarus Verilog output</span><span id="trace-source">Loading verified trace…</span></footer>
+    <section class="error-panel" id="error-panel" hidden role="alert"></section>
+  </main>
+</body>
+</html>
