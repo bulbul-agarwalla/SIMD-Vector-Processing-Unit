@@ -1,0 +1,149 @@
+VCD info: dumpfile results/simd_demo.vcd opened for output.
+============================================================
+8-LANE SIMD PROCESSOR — RTL SIMULATION DEMONSTRATION
+Icarus Verilog + GTKWave | 8 parallel unsigned 8-bit lanes
+============================================================
+
+[RESET] Synchronous reset cleared vector_a and vector_b.
+
+[LOAD] A=d723ff0580421001  B=173901fa7f4220ff
+
+============================================================
+Operation : ADD
+Opcode    : 000   valid=1   op_select=00001
+Input A   : d723ff0580421001
+Input B   : 173901fa7f4220ff
+Expected  : ee5c00ffff843000
+Actual    : ee5c00ffff843000
+  Lane results (L7 .. L0): L7=ee  L6=5c  L5=00  L4=ff  L3=ff  L2=84  L1=30  L0=00
+Status    : PASS
+TRACE|set=1|name=ADD|opcode=000|valid=1|select=00001|A=d723ff0580421001|B=173901fa7f4220ff|expected=ee5c00ffff843000|actual=ee5c00ffff843000
+
+============================================================
+Operation : SUB
+Opcode    : 001   valid=1   op_select=00010
+Input A   : d723ff0580421001
+Input B   : 173901fa7f4220ff
+Expected  : c0eafe0b0100f002
+Actual    : c0eafe0b0100f002
+  Lane results (L7 .. L0): L7=c0  L6=ea  L5=fe  L4=0b  L3=01  L2=00  L1=f0  L0=02
+Status    : PASS
+TRACE|set=1|name=SUB|opcode=001|valid=1|select=00010|A=d723ff0580421001|B=173901fa7f4220ff|expected=c0eafe0b0100f002|actual=c0eafe0b0100f002
+
+============================================================
+Operation : AND
+Opcode    : 010   valid=1   op_select=00100
+Input A   : d723ff0580421001
+Input B   : 173901fa7f4220ff
+Expected  : 1721010000420001
+Actual    : 1721010000420001
+  Lane results (L7 .. L0): L7=17  L6=21  L5=01  L4=00  L3=00  L2=42  L1=00  L0=01
+Status    : PASS
+TRACE|set=1|name=AND|opcode=010|valid=1|select=00100|A=d723ff0580421001|B=173901fa7f4220ff|expected=1721010000420001|actual=1721010000420001
+
+============================================================
+Operation : OR
+Opcode    : 011   valid=1   op_select=01000
+Input A   : d723ff0580421001
+Input B   : 173901fa7f4220ff
+Expected  : d73bffffff4230ff
+Actual    : d73bffffff4230ff
+  Lane results (L7 .. L0): L7=d7  L6=3b  L5=ff  L4=ff  L3=ff  L2=42  L1=30  L0=ff
+Status    : PASS
+TRACE|set=1|name=OR|opcode=011|valid=1|select=01000|A=d723ff0580421001|B=173901fa7f4220ff|expected=d73bffffff4230ff|actual=d73bffffff4230ff
+
+============================================================
+Operation : LT
+Opcode    : 100   valid=1   op_select=10000
+Input A   : d723ff0580421001
+Input B   : 173901fa7f4220ff
+Expected  : 0001000100000101
+Actual    : 0001000100000101
+  Lane results (L7 .. L0): L7=00  L6=01  L5=00  L4=01  L3=00  L2=00  L1=01  L0=01
+Status    : PASS
+TRACE|set=1|name=LT|opcode=100|valid=1|select=10000|A=d723ff0580421001|B=173901fa7f4220ff|expected=0001000100000101|actual=0001000100000101
+
+============================================================
+Operation : INVALID
+Opcode    : 101   valid=0   op_select=00000
+Input A   : d723ff0580421001
+Input B   : 173901fa7f4220ff
+Expected  : 0000000000000000
+Actual    : 0000000000000000
+  Lane results (L7 .. L0): L7=00  L6=00  L5=00  L4=00  L3=00  L2=00  L1=00  L0=00
+Status    : PASS
+TRACE|set=1|name=INVALID|opcode=101|valid=0|select=00000|A=d723ff0580421001|B=173901fa7f4220ff|expected=0000000000000000|actual=0000000000000000
+
+[LOAD] A=000102037f80feff  B=fffefdfc01800204
+
+============================================================
+Operation : ADD
+Opcode    : 000   valid=1   op_select=00001
+Input A   : 000102037f80feff
+Input B   : fffefdfc01800204
+Expected  : ffffffff80000003
+Actual    : ffffffff80000003
+  Lane results (L7 .. L0): L7=ff  L6=ff  L5=ff  L4=ff  L3=80  L2=00  L1=00  L0=03
+Status    : PASS
+TRACE|set=2|name=ADD|opcode=000|valid=1|select=00001|A=000102037f80feff|B=fffefdfc01800204|expected=ffffffff80000003|actual=ffffffff80000003
+
+============================================================
+Operation : SUB
+Opcode    : 001   valid=1   op_select=00010
+Input A   : 000102037f80feff
+Input B   : fffefdfc01800204
+Expected  : 010305077e00fcfb
+Actual    : 010305077e00fcfb
+  Lane results (L7 .. L0): L7=01  L6=03  L5=05  L4=07  L3=7e  L2=00  L1=fc  L0=fb
+Status    : PASS
+TRACE|set=2|name=SUB|opcode=001|valid=1|select=00010|A=000102037f80feff|B=fffefdfc01800204|expected=010305077e00fcfb|actual=010305077e00fcfb
+
+============================================================
+Operation : AND
+Opcode    : 010   valid=1   op_select=00100
+Input A   : 000102037f80feff
+Input B   : fffefdfc01800204
+Expected  : 0000000001800204
+Actual    : 0000000001800204
+  Lane results (L7 .. L0): L7=00  L6=00  L5=00  L4=00  L3=01  L2=80  L1=02  L0=04
+Status    : PASS
+TRACE|set=2|name=AND|opcode=010|valid=1|select=00100|A=000102037f80feff|B=fffefdfc01800204|expected=0000000001800204|actual=0000000001800204
+
+============================================================
+Operation : OR
+Opcode    : 011   valid=1   op_select=01000
+Input A   : 000102037f80feff
+Input B   : fffefdfc01800204
+Expected  : ffffffff7f80feff
+Actual    : ffffffff7f80feff
+  Lane results (L7 .. L0): L7=ff  L6=ff  L5=ff  L4=ff  L3=7f  L2=80  L1=fe  L0=ff
+Status    : PASS
+TRACE|set=2|name=OR|opcode=011|valid=1|select=01000|A=000102037f80feff|B=fffefdfc01800204|expected=ffffffff7f80feff|actual=ffffffff7f80feff
+
+============================================================
+Operation : LT
+Opcode    : 100   valid=1   op_select=10000
+Input A   : 000102037f80feff
+Input B   : fffefdfc01800204
+Expected  : 0101010100000000
+Actual    : 0101010100000000
+  Lane results (L7 .. L0): L7=01  L6=01  L5=01  L4=01  L3=00  L2=00  L1=00  L0=00
+Status    : PASS
+TRACE|set=2|name=LT|opcode=100|valid=1|select=10000|A=000102037f80feff|B=fffefdfc01800204|expected=0101010100000000|actual=0101010100000000
+
+============================================================
+Operation : INVALID
+Opcode    : 101   valid=0   op_select=00000
+Input A   : 000102037f80feff
+Input B   : fffefdfc01800204
+Expected  : 0000000000000000
+Actual    : 0000000000000000
+  Lane results (L7 .. L0): L7=00  L6=00  L5=00  L4=00  L3=00  L2=00  L1=00  L0=00
+Status    : PASS
+TRACE|set=2|name=INVALID|opcode=101|valid=0|select=00000|A=000102037f80feff|B=fffefdfc01800204|expected=0000000000000000|actual=0000000000000000
+
+============================================================
+SIMD DEMO COMPLETE: 12 operation checks passed
+Waveform: results/simd_demo.vcd
+============================================================
+testbench/simd_demo_tb.v:225: $finish called at 58000 (1ps)

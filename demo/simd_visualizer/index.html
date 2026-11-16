@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8-Lane SIMD Vector Processing Unit — RTL Simulation Visualizer</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="viewport">
+<div id="stage" data-order="msb">
+
+  <!-- ============ HEADER ============ -->
+  <header id="hdr">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="2" y="2" width="28" height="28" rx="6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <g fill="currentColor"><rect x="7" y="7" width="3" height="18" rx="1"/><rect x="12" y="7" width="3" height="18" rx="1"/><rect x="17" y="7" width="3" height="18" rx="1"/><rect x="22" y="7" width="3" height="18" rx="1"/></g>
+      </svg>
+      <div>
+        <h1>8-Lane SIMD Vector Processing Unit</h1>
+        <p>Interactive datapath visualizer · <code>simd_processor_top</code> · 64-bit datapath · 8 × unsigned 8-bit lanes</p>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <span class="pill pill-sim">RTL SIMULATION VISUALIZATION</span>
+      <span class="pill pill-warn">NOT AN FPGA IMPLEMENTATION</span>
+      <button id="btnVerify" class="pill pill-ok" title="Show verification report">
+        <i class="dot"></i><span id="verifyText">VERIFYING…</span>
+      </button>
+      <button id="btnOrder" class="pill pill-btn" title="Reverse the on-screen lane order (data is unchanged)">LANES: L7 → L0</button>
+    </div>
+  </header>
+
+  <!-- ============ CONTROL UNIT ============ -->
+  <div class="lbl" id="lblCU"><b>CONTROL UNIT</b><span>control_unit.v</span><span class="sub">opcode[2:0] → alu_opcode, operation_valid, op_select</span></div>
+  <section id="cu" class="panel">
+    <div class="cu-block">
+      <div class="cu-title">opcode[2:0]</div>
+      <div class="bitbox" id="cuOpBits"><i>-</i><i>-</i><i>-</i></div>
+    </div>
+    <div class="cu-arrow">▶</div>
+    <div class="cu-block cu-decoder">
+      <div class="cu-title">DECODED OPERATION</div>
+      <div class="cu-opname" id="cuName">—</div>
+      <div class="cu-opdesc" id="cuDesc">waiting for instruction</div>
+    </div>
+    <div class="cu-arrow">▶</div>
+    <div class="cu-block">
+      <div class="cu-title">alu_opcode[2:0]</div>
+      <div class="bitbox amber" id="cuAluBits"><i>-</i><i>-</i><i>-</i></div>
+    </div>
+    <div class="cu-block">
+      <div class="cu-title">operation_valid</div>
+      <div class="validbox" id="cuValid"><i class="led"></i><b id="cuValidTxt">—</b></div>
+    </div>
+    <div class="cu-block cu-sel">
+      <div class="cu-title">op_select[4:0] one-hot</div>
+      <div class="selrow" id="cuSel">
+        <span data-s="4"><i class="led"></i>LT</span><span data-s="3"><i class="led"></i>OR</span><span data-s="2"><i class="led"></i>AND</span><span data-s="1"><i class="led"></i>SUB</span><span data-s="0"><i class="led"></i>ADD</span>
+      </div>
+    </div>
+    <div class="cu-bcast" id="cuBcast"><span>BROADCAST</span><b>1 instruction → 8 lanes</b></div>
+  </section>
+
+  <div class="gap1"></div>
+
+  <!-- ============ INPUT REGISTERS ============ -->
+  <div class="lbl a" id="lblA"><b>VECTOR A</b><span>vector_a[63:0]</span><em id="hexA">—</em></div>
+  <section class="band" id="bandA"></section>
+  <div class="lbl b" id="lblB"><b>VECTOR B</b><span>vector_b[63:0]</span><em id="hexB">—</em></div>
+  <section class="band" id="bandB"></section>
+
+  <div class="gap2"></div>
+
+  <!-- ============ LANES ============ -->
+  <div class="lbl l" id="lblL"><b>8 PARALLEL<br>EXECUTION LANES</b><span>simd_top.v · alu.v × 8</span><span class="sub">Same instruction, independent data. L0 = bits [7:0] … L7 = bits [63:56]</span></div>
+  <section class="band lanes" id="lanes"></section>
+
+  <div class="gap3"></div>
+
+  <!-- ============ OUTPUT ============ -->
+  <div class="lbl o" id="lblO"><b>OUTPUT REGISTER</b><span>result[63:0]</span><span class="sub">result = operation_valid ? lane outputs : 0</span></div>
+  <section id="out" class="panel">
+    <div class="band outcells" id="outCells"></div>
+    <div class="outfoot">
+      <div class="bighex" id="bigHex"><small>result[63:0] =</small><span class="hx"><span class="pre">0x</span><span class="bytes" id="bigBytes"></span></span></div>
+      <div class="outinfo">
+        <div class="validbox" id="outValid"><i class="led"></i><b id="outValidTxt">operation_valid = —</b></div>
+        <div class="chk" id="outChk">RTL check: —</div>
+        <div class="vcdt" id="outT">VCD t = —</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CAPTION + CONTROLS ============ -->
+  <div id="caption"><span class="cstep" id="capStep">①</span><span id="capText">Press ▶ Play (Space) to begin the SIMD walkthrough.</span></div>
+
+  <footer id="bar">
+    <div class="grp transport">
+      <button id="btnPrev" title="Previous operation (←)">⏮<small>Prev</small></button>
+      <button id="btnPlay" class="primary" title="Play / Pause (Space)">▶<small>Play</small></button>
+      <button id="btnNext" title="Next operation (→)">⏭<small>Next</small></button>
+      <button id="btnReplay" title="Replay this operation (R)">⟲<small>Replay</small></button>
+    </div>
+    <div class="grp">
+      <div class="gl">SPEED</div>
+      <div class="seg" id="segSpeed">
+        <button data-v="0.25">0.25×</button><button data-v="0.5">0.5×</button><button data-v="1" class="on">1×</button><button data-v="2">2×</button><button data-v="4">4×</button>
+      </div>
+      <label class="loop"><input type="checkbox" id="chkLoop"> Loop</label>
+    </div>
+    <div class="grp tracker-grp">
+      <div class="gl">PIPELINE STAGE <span id="stepNo"></span></div>
+      <div class="tracker" id="tracker"></div>
+    </div>
+    <div class="grp">
+      <div class="gl">OPERAND SET</div>
+      <div class="seg" id="segSet"></div>
+    </div>
+    <div class="grp">
+      <div class="gl">OPERATION (opcode)</div>
+      <div class="seg ops" id="segOps"></div>
+    </div>
+  </footer>
+
+  <svg id="wires" xmlns="http://www.w3.org/2000/svg"></svg>
+</div>
+</div>
+
+<!-- verification modal -->
+<div id="modal" hidden>
+  <div class="modal-card">
+    <button id="modalClose" aria-label="Close">✕</button>
+    <h2>Verification report</h2>
+    <p class="mdesc" id="modalDesc"></p>
+    <div class="mscroll"><table id="vtable"></table></div>
+  </div>
+</div>
+
+<script src="simulation_data.js"></script>
+<script src="model.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
